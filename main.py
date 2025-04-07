@@ -108,18 +108,18 @@ def autocomplete():
 
 
 @app.route('/predict', methods=['POST'])
-@app.route('/predict', methods=['POST'])
 def predict():
-    symptoms = request.form.get('symptoms')
+    # Get multiple selected symptoms from the form
+    symptoms = request.form.getlist('symptoms[]')
 
     if not symptoms:
-        return render_template('index.html', message="Please enter symptoms.")
+        return render_template('index.html', message="Please select symptoms.")
 
-    user_symptoms = [s.strip().lower() for s in symptoms.split(',') if s.strip()]
+    user_symptoms = [s.strip().lower() for s in symptoms if s.strip()]
 
-    # Condition: At least 3 symptoms required
+    # Require at least 3 symptoms
     if len(user_symptoms) < 3:
-        return render_template('index.html', message="Please enter at least three symptoms.")
+        return render_template('index.html', message="Please select at least three symptoms.")
 
     invalid_symptoms = []
     suggestions = {}
